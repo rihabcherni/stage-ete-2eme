@@ -1,0 +1,12 @@
+{
+    "@@locale": "fr",
+    "settings": "Paramètres",
+    "darkMode": "Mode sombre",
+    "welcome": "Bienvenue chez SNCFT Fret Ferroviaire",
+    "description1": "Présentation de notre solution intégrée pour optimiser la logistique du fret ferroviaire. Découvrez comment nous améliorons l'efficacité, la gestion des ressources et la satisfaction des clients.",
+    "clients": "Pour les clients",
+    "description2": "Suivez vos expéditions en temps réel, assurez des livraisons ponctuelles et réduisez les émissions de carbone avec notre système de gestion avancé du fret.",
+    "operators": "Pour les opérateurs et les conducteurs",
+    "description3": "Gérez les itinéraires, surveillez les ressources et optimisez les horaires efficacement. Notre système fournit des outils pour adapter les plans et assurer des opérations fluides."  
+  }
+  
