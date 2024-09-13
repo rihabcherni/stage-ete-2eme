@@ -28,18 +28,21 @@ class HeaderAuth extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Image.asset(imageAssetPath),
-                const SizedBox(height: 10),
                 FadeInUp(
                   duration: const Duration(milliseconds: 1600),
                   child: Text(
                     title,
                     style: const TextStyle(
                       color: kWhiteColor,
-                      fontSize: 12,
+                      fontSize: 24,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
+                ),
+                const SizedBox(height: 5),
+                Image.asset(
+                  imageAssetPath,
+                  height: 120,
                 ),
               ],
             ),

@@ -1,42 +1,96 @@
 import 'package:flutter/material.dart';
 import 'package:animate_do/animate_do.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:frontend/utils/constant.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:frontend/widgets/Home.dart';
+import 'package:frontend/screens/visitor/introScreen.dart';
 
-class LoadingScreen extends StatelessWidget {
-  const LoadingScreen({super.key});
+class LoadingScreen extends StatefulWidget {
+  const LoadingScreen({Key? key}) : super(key: key);
+
+  @override
+  // ignore: library_private_types_in_public_api
+  _LoadingScreenState createState() => _LoadingScreenState();
+}
+
+class _LoadingScreenState extends State<LoadingScreen> {
+  final FlutterSecureStorage _storage = const FlutterSecureStorage();
+  @override
+  void initState() {
+    super.initState();
+    _checkAuthentication();
+  }
+
+  Future<void> _checkAuthentication() async {
+    String? token = await _storage.read(key: 'token');
+    String? role = await _storage.read(key: 'role');
+
+    if (token != null && role != null) {
+      _navigateToHome(role);
+    } else {
+      Future.delayed(const Duration(seconds: 5), () {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => const IntroScreen()),
+        );
+      });
+    }
+  }
+
+  void _navigateToHome(String role) {
+    Future.delayed(const Duration(seconds: 5), () {
+      switch (role) {
+        case 'administrateur':
+          Navigator.of(context).pushReplacement(MaterialPageRoute(
+              builder: (context) => HomePage(
+                    userRole: 'admin',
+                  )));
+          break;
+        case 'client':
+          Navigator.of(context).pushReplacement(MaterialPageRoute(
+              builder: (context) => HomePage(
+                    userRole: 'client',
+                  )));
+          break;
+        case 'conducteur':
+          Navigator.of(context).pushReplacement(MaterialPageRoute(
+              builder: (context) => HomePage(
+                    userRole: 'conductor',
+                  )));
+          break;
+        case 'operateur':
+          Navigator.of(context).pushReplacement(MaterialPageRoute(
+              builder: (context) => HomePage(
+                    userRole: 'operator',
+                  )));
+          break;
+        default:
+          Navigator.of(context).pushReplacement(
+              MaterialPageRoute(builder: (context) => const IntroScreen()));
+          break;
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    Future.delayed(const Duration(seconds: 5), () {
-      Navigator.pushReplacementNamed(context, '/welcome');
-    });
-
     return Scaffold(
-      backgroundColor: kPrimaryColor,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             FadeInDown(
               duration: const Duration(seconds: 3),
-              child: Container(
-                width: 150,
-                height: 150,
-                padding: const EdgeInsets.all(12),
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                  shape: BoxShape.circle,
-                ),
-                child: const Image(
-                  image: AssetImage('assets/images/logosncft.png'),
-                ),
+              child: const Image(
+                image: AssetImage('assets/images/logosncft.png'),
+                width: 180,
+                height: 180,
               ),
             ),
             const SizedBox(height: 20),
             const SpinKitFadingCircle(
-              color: Colors.white,
-              size: 70.0,
+              color: kPrimaryColor,
+              size: 50.0,
             )
           ],
         ),

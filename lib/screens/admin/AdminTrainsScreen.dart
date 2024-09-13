@@ -3,21 +3,20 @@ import 'package:frontend/models/train_model.dart';
 import 'package:frontend/services/train_service.dart';
 import 'package:frontend/widgets/train_form.dart';
 import 'package:frontend/widgets/train_list_item.dart';
-import 'package:intl/intl.dart';
 import 'package:accordion/accordion.dart';
 import 'package:accordion/controllers.dart';
 
-class TrainListScreen extends StatefulWidget {
+class AdminTrainsScreen extends StatefulWidget {
   static const headerStyle = TextStyle(
       color: Color(0xffffffff), fontSize: 18, fontWeight: FontWeight.bold);
   static const contentStyle = TextStyle(
       color: Color(0xff999999), fontSize: 14, fontWeight: FontWeight.normal);
 
   @override
-  _TrainListScreenState createState() => _TrainListScreenState();
+  _AdminTrainsScreenState createState() => _AdminTrainsScreenState();
 }
 
-class _TrainListScreenState extends State<TrainListScreen> {
+class _AdminTrainsScreenState extends State<AdminTrainsScreen> {
   final TrainService _trainService = TrainService();
   late Future<List<Train>> _trains;
 
@@ -120,7 +119,7 @@ class _TrainListScreenState extends State<TrainListScreen> {
                 isOpen: false,
                 leftIcon: const Icon(Icons.train, color: Colors.white),
                 header: Text('Train: ${train.trainReference}',
-                    style: TrainListScreen.headerStyle),
+                    style: AdminTrainsScreen.headerStyle),
                 content: TrainListItem(
                   train: train,
                   onEdit: () => _showTrainForm(train: train),

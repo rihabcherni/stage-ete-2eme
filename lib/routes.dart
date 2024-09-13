@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/screens/admin/accordion.dart';
-import 'package:frontend/screens/admin/chat_screen.dart';
-import 'package:frontend/screens/admin/adminDashboard.dart';
+import 'package:frontend/screens/admin/AdminMapScreen.dart';
+import 'package:frontend/screens/admin/AdminTrainsScreen.dart';
+import 'package:frontend/screens/chat/chat_screen.dart';
 import 'package:frontend/screens/admin/messageUserList.dart';
-import 'package:frontend/screens/admin/train_list_screen.dart';
-import 'package:frontend/screens/admin/userList.dart';
+import 'package:frontend/screens/admin/AdminUsersScreen.dart';
+import 'package:frontend/screens/chat/chat_user_list.dart';
 import 'package:frontend/screens/client/clientDashboard.dart';
-import 'package:frontend/screens/client/orderListPage.dart';
+import 'package:frontend/screens/client/order_page.dart';
 import 'package:frontend/screens/conducteur/conducteurDashboard.dart';
 import 'package:frontend/screens/operateur/OperateurDashboard.dart';
 import 'package:frontend/screens/visitor/auth/forgotPassword.dart';
@@ -18,6 +18,7 @@ import 'package:frontend/screens/visitor/auth/update_password_screen.dart';
 import 'package:frontend/screens/visitor/auth/verify_email_screen.dart';
 import 'package:frontend/screens/visitor/loading.dart';
 import 'package:frontend/screens/visitor/settings.dart';
+import 'package:frontend/widgets/Home.dart';
 
 class ListeRouter {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -26,16 +27,6 @@ class ListeRouter {
     switch (settings.name) {
       case '/':
         return MaterialPageRoute(builder: (_) => const LoadingScreen());
-      case '/chat-list':
-        return MaterialPageRoute(builder: (_) => UserListScreen());
-      case '/chat':
-        final args = settings.arguments as Map<String, String>;
-        return MaterialPageRoute(
-          builder: (_) => ChatScreen(
-            userId: args['userId']!,
-            receiverId: args['receiverId']!,
-          ),
-        );
       case '/welcome':
         return MaterialPageRoute(builder: (_) => const IntroScreen());
       case '/settings':
@@ -43,7 +34,7 @@ class ListeRouter {
 
       // auth
       case '/login':
-        return MaterialPageRoute(builder: (_) => LoginScreen());
+        return MaterialPageRoute(builder: (_) => const LoginScreen());
       case '/inscription':
         return MaterialPageRoute(builder: (_) => const InscriptionPage());
       case '/update-password':
@@ -65,20 +56,35 @@ class ListeRouter {
       case '/client':
         return MaterialPageRoute(builder: (_) => ClientDashboard());
       case '/client/order':
-        if (args is String) {
-          return MaterialPageRoute(
-            builder: (_) => OrderListPage(clientId: args),
-          );
-        }
-        return _errorRoute(settings);
+        return MaterialPageRoute(
+          builder: (_) => OrderPage(),
+        );
 
       // admin
       case '/admin':
-        return MaterialPageRoute(builder: (_) => const AdminDashboardScreen());
-      case '/admin/liste-user':
-        return MaterialPageRoute(builder: (_) => const UserListPage());
+        return MaterialPageRoute(
+            builder: (_) => HomePage(
+                  userRole: 'admin',
+                ));
+      case '/admin/map':
+        return MaterialPageRoute(builder: (_) => AdminMapScreen());
+      case '/admin/users':
+        return MaterialPageRoute(builder: (_) => const AdminUsersScreen());
       case '/admin/train':
-        return MaterialPageRoute(builder: (_) => TrainListScreen());
+        return MaterialPageRoute(builder: (_) => AdminTrainsScreen());
+      case '/admin/chat-list':
+        return MaterialPageRoute(builder: (_) => UserListScreen());
+      case '/admin/chat':
+        return MaterialPageRoute(builder: (_) => const ChatUserList());
+
+      case '/chat':
+        final args = settings.arguments as Map<String, String>;
+        return MaterialPageRoute(
+          builder: (_) => ChatScreen(
+            userId: args['userId']!,
+            receiverId: args['receiverId']!,
+          ),
+        );
 
       // operateur
       case '/operateur':

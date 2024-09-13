@@ -64,7 +64,7 @@ class _LoginScreenState extends State<LoginScreen> {
             imageAssetPath: "assets/images/account.png",
             title: "Congratulations: Login Successfully",
             text:
-                'Welcome $fullName. You will be redirected to the Home Page in a few seconds.',
+                'Welcome $fullName.',
             height: 0.60,
           );
         },
@@ -126,7 +126,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 children: <Widget>[
                   const HeaderAuth(
                     imageAssetPath: 'assets/images/logo.png',
-                    height: 200, title: 'Login',
+                    height: 200,
+                    title: 'Login',
                   ),
                   Container(
                     margin: const EdgeInsets.fromLTRB(50, 10, 50, 5),

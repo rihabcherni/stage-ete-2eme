@@ -39,23 +39,23 @@ class _IntroScreenState extends State<IntroScreen> {
     super.didChangeDependencies();
     _pages = [
       {
-        'color': '#ffe24e',
+        'color': '#16325B',
         'title': AppLocalizations.of(context).translate('welcome'),
-        'image': 'assets/images/image1.png',
+        'image': 'assets/images/1.PNG',
         'description': AppLocalizations.of(context).translate('description1'),
         'skip': true
       },
       {
-        'color': '#a3e4f1',
+        'color': '#227B94',
         'title': AppLocalizations.of(context).translate('clients'),
-        'image': 'assets/images/image2.png',
+        'image': 'assets/images/2.PNG',
         'description': AppLocalizations.of(context).translate('description2'),
         'skip': true
       },
       {
-        'color': '#31b77a',
+        'color': '#78B7D0',
         'title': AppLocalizations.of(context).translate('operators'),
-        'image': 'assets/images/image3.png',
+        'image': 'assets/images/3.PNG',
         'description': AppLocalizations.of(context).translate('description3'),
         'skip': false
       },
@@ -132,11 +132,11 @@ class _IntroScreenState extends State<IntroScreen> {
   Widget _indicatorsTrue() {
     final String color;
     if (_activePage == 0) {
-      color = '#ffe24e';
+      color = '#16325B';
     } else if (_activePage == 1) {
-      color = '#a3e4f1';
+      color = '#227B94';
     } else {
-      color = '#31b77a';
+      color = '#78B7D0';
     }
 
     return AnimatedContainer(

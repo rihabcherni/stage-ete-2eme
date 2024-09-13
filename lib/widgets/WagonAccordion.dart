@@ -2,7 +2,7 @@ import 'package:accordion/accordion.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/models/train_model.dart';
 import 'package:frontend/models/wagon.dart';
-import 'package:frontend/screens/admin/train_list_screen.dart';
+import 'package:frontend/screens/admin/AdminTrainsScreen.dart';
 import 'package:frontend/widgets/wagon_form.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -85,14 +85,14 @@ class _WagonAccordionState extends State<WagonAccordion> {
               headerBackgroundColor: Colors.black38,
               headerBackgroundColorOpened: Colors.black54,
               header: Text('Wagon: ${wagon.wagonReference}',
-                  style: TrainListScreen.headerStyle),
+                  style: AdminTrainsScreen.headerStyle),
               content: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text('Capacity: ${wagon.capacity}',
-                      style: TrainListScreen.contentStyle),
+                      style: AdminTrainsScreen.contentStyle),
                   Text('Current Load: ${wagon.currentLoad}',
-                      style: TrainListScreen.contentStyle),
+                      style: AdminTrainsScreen.contentStyle),
                   Row(
                     children: [
                       IconButton(

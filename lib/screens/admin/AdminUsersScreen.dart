@@ -5,14 +5,14 @@ import 'package:frontend/services/user_service.dart';
 import 'package:frontend/utils/constant.dart';
 import 'package:frontend/widgets/custom_drawer.dart';
 
-class UserListPage extends StatefulWidget {
-  const UserListPage({Key? key}) : super(key: key);
+class AdminUsersScreen extends StatefulWidget {
+  const AdminUsersScreen({Key? key}) : super(key: key);
 
   @override
-  State<UserListPage> createState() => _UserListPageState();
+  State<AdminUsersScreen> createState() => _AdminUsersScreenState();
 }
 
-class _UserListPageState extends State<UserListPage> {
+class _AdminUsersScreenState extends State<AdminUsersScreen> {
   TextEditingController controller = TextEditingController();
   List<User> list = [];
   bool isLoading = true;
@@ -42,7 +42,7 @@ class _UserListPageState extends State<UserListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: CustomDrawer(actor:"Administrateur", clientId: '',),
+      drawer: CustomDrawer(actor: "administrateur"),
       body: SafeArea(
         child: Center(
           child: Padding(

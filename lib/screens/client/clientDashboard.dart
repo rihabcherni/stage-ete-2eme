@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/widgets/custom_drawer.dart';
 
 class ClientDashboard extends StatelessWidget {
   @override
@@ -7,6 +8,7 @@ class ClientDashboard extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Client Dashboard'),
       ),
+      drawer: CustomDrawer(actor: "client"),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: ListView(

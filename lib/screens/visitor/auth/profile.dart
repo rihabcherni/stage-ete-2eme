@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:frontend/models/user.dart';
 import 'package:frontend/services/auth_service.dart';
+import 'package:frontend/widgets/custom_drawer.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
@@ -17,9 +18,10 @@ class _ProfilePageState extends State<ProfilePage> {
   User? user;
   final _formKey = GlobalKey<FormState>();
   File? _imageFile;
-  final AuthService _userService = AuthService(); // Adjust this
+  final AuthService _userService = AuthService(); // Adjust this if needed
   final FlutterSecureStorage _storage = FlutterSecureStorage();
   String? _token;
+  String? _role; // _role is nullable
 
   @override
   void initState() {
@@ -29,6 +31,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Future<void> _loadTokenAndUserProfile() async {
     _token = await _storage.read(key: 'token');
+    _role = await _storage.read(key: 'role'); // _role can be null
     if (_token != null) {
       User? profile = await _userService.getUserProfile(_token!);
       setState(() {
@@ -72,11 +75,13 @@ class _ProfilePageState extends State<ProfilePage> {
     if (user == null) {
       return const Center(child: CircularProgressIndicator());
     }
-
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Profile'),
+        title: Text(
+            'Profile ${_role ?? "Unknown"}'), // Use Text widget without const
       ),
+      drawer: CustomDrawer(
+          actor: _role ?? ''), 
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(

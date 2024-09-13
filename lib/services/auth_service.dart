@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:flutter/src/widgets/framework.dart';
 import 'package:frontend/models/user.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -36,31 +37,7 @@ class AuthService {
       return 'Login failed: ${response.body}';
     }
   }
-
-  // Future<bool> updateProfileWithImage(
-  //     String token, User user, File imageFile) async {
-  //   try {
-  //     final uri = Uri.parse('$baseUrl/profile');
-  //     final request = http.MultipartRequest('PUT', uri)
-  //       ..headers['Authorization'] = 'Bearer $token'
-  //       ..fields.addAll(user.toJson())
-  //       ..files.add(
-  //         await http.MultipartFile.fromPath(
-  //           'photo',
-  //           imageFile.path,
-  //           contentType: MediaType.parse(mime(imageFile.path)!),
-  //         ),
-  //       );
-
-  //     final response = await request.send();
-  //     return response.statusCode == 200;
-  //   } catch (e) {
-  //     print('Error: $e');
-  //     return false;
-  //   }
-  // }
-
-  Future<void> logoutUser() async {
+  Future<void> logoutUser(BuildContext context) async {
     final token = await storage.read(key: 'token');
     final response = await http.post(
       Uri.parse('$baseUrl/logout'),
