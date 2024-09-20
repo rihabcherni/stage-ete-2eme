@@ -1,12 +1,12 @@
 import 'dart:convert';
-import 'dart:io';
-import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter/material.dart';
 import 'package:frontend/models/user.dart';
+import 'package:frontend/utils/constant.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class AuthService {
-  final String baseUrl = 'http://localhost:5000/api/auth';
+  final String baseUrl = '$backendUrl/api/auth';
   final storage = const FlutterSecureStorage();
   Future<String> registerUser(User user) async {
     final response = await http.post(

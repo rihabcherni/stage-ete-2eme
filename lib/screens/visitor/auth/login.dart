@@ -21,7 +21,8 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   bool _isLoading = false;
-  final FlutterSecureStorage _storage = FlutterSecureStorage();
+  final FlutterSecureStorage _storage = const FlutterSecureStorage();
+  bool _obscurePassword = true;
 
   Future<void> _login() async {
     setState(() {
@@ -63,8 +64,7 @@ class _LoginScreenState extends State<LoginScreen> {
           return MessagePopup(
             imageAssetPath: "assets/images/account.png",
             title: "Congratulations: Login Successfully",
-            text:
-                'Welcome $fullName.',
+            text: 'Welcome $fullName .',
             height: 0.60,
           );
         },
@@ -145,12 +145,44 @@ class _LoginScreenState extends State<LoginScreen> {
                                 trailingIcon: Icons.mail,
                               ),
                               const SizedBox(height: 15),
-                              CustomTextField(
-                                hint: 'Password',
-                                controller: _passwordController,
-                                obscureText: true,
-                                trailingIcon: Icons.lock,
-                              ),
+                              TextFormField(
+                                  controller: _passwordController,
+                                  cursorColor: kPrimaryColor,
+                                  obscureText: _obscurePassword,
+                                  decoration: InputDecoration(
+                                      contentPadding:
+                                          const EdgeInsets.only(left: 20.0),
+                                      hintText: "Password",
+                                      border: buildBorder(),
+                                      enabledBorder: buildBorder(),
+                                      focusedBorder: buildBorder(kPrimaryColor),
+                                      prefixIcon: const Padding(
+                                        padding: EdgeInsets.only(left: 12.0),
+                                        child: Icon(
+                                          Icons.lock,
+                                          color: kPrimaryColor,
+                                          size: 20,
+                                        ),
+                                      ),
+                                      suffixIcon: Padding(
+                                        padding:
+                                            const EdgeInsets.only(right: 12.0),
+                                        child: IconButton(
+                                          icon: Icon(
+                                            _obscurePassword
+                                                ? Icons.visibility
+                                                : Icons.visibility_off,
+                                            color: kPrimaryColor,
+                                            size: 20,
+                                          ),
+                                          onPressed: () {
+                                            setState(() {
+                                              _obscurePassword =
+                                                  !_obscurePassword;
+                                            });
+                                          },
+                                        ),
+                                      ))),
                               const SizedBox(height: 5),
                               Align(
                                 alignment: Alignment.centerLeft,
@@ -161,7 +193,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                   },
                                   child: const Text(
                                     'Forgot Password?',
-                                    style: TextStyle(color: kPrimaryColor),
+                                    style: TextStyle(
+                                        color: kPrimaryColor,
+                                        fontWeight: FontWeight.bold),
                                   ),
                                 ),
                               ),
@@ -176,7 +210,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>[
                                   const Text(
-                                    'Not a member?',
+                                    "Don't have an account?",
                                     style: TextStyle(color: kGrayColor),
                                   ),
                                   TextButton(
@@ -186,7 +220,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                     },
                                     child: const Text(
                                       'SignUp',
-                                      style: TextStyle(color: kPrimaryColor),
+                                      style: TextStyle(
+                                          color: kPrimaryColor,
+                                          fontWeight: FontWeight.bold),
                                     ),
                                   ),
                                 ],
@@ -200,6 +236,15 @@ class _LoginScreenState extends State<LoginScreen> {
                 ],
               ),
             ),
+    );
+  }
+
+  OutlineInputBorder buildBorder([Color? color]) {
+    return OutlineInputBorder(
+      borderRadius: BorderRadius.circular(30),
+      borderSide: BorderSide(
+        color: color ?? kInputColor,
+      ),
     );
   }
 }

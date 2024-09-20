@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:frontend/models/user.dart';
 import 'package:frontend/services/user_service.dart';
 import 'package:frontend/utils/constant.dart';
-import 'package:frontend/widgets/custom_drawer.dart';
 
 class AdminUsersScreen extends StatefulWidget {
   const AdminUsersScreen({Key? key}) : super(key: key);
@@ -42,7 +41,6 @@ class _AdminUsersScreenState extends State<AdminUsersScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: CustomDrawer(actor: "administrateur"),
       body: SafeArea(
         child: Center(
           child: Padding(

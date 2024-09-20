@@ -55,17 +55,17 @@ class CustomTextField extends StatelessWidget {
                 maxLines: maxLines,
                 obscureText: obscureText,
                 decoration: InputDecoration(
-                  contentPadding: const EdgeInsets.only(left: 20.0),
                   hintText: hint,
                   border: buildBorder(),
                   enabledBorder: buildBorder(),
                   focusedBorder: buildBorder(kPrimaryColor),
-                  suffixIcon: trailingIcon != null
+                  prefixIcon: trailingIcon != null
                       ? Padding(
-                          padding: const EdgeInsets.only(right: 20.0),
+                          padding: const EdgeInsets.only(left: 12.0),
                           child: Icon(
                             trailingIcon,
                             color: kPrimaryColor,
+                            size: 20,
                           ),
                         )
                       : null,

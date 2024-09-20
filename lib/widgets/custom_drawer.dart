@@ -1,65 +1,118 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:frontend/models/user.dart';
 import 'package:frontend/screens/visitor/auth/logout.dart';
 import 'package:frontend/services/auth_service.dart';
 import 'package:frontend/utils/constant.dart';
 
-class CustomDrawer extends StatelessWidget {
+class CustomDrawer extends StatefulWidget {
   final String actor;
-  final AuthService _authService = AuthService();
 
   CustomDrawer({required this.actor});
+
+  @override
+  _CustomDrawerState createState() => _CustomDrawerState();
+}
+
+class _CustomDrawerState extends State<CustomDrawer> {
+  final FlutterSecureStorage _storage = FlutterSecureStorage();
+  final AuthService _authService = AuthService();
+  User? _user;
+  final String baseImageUrl = 'http://127.0.0.1:5000';
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserProfile();
+  }
+
+  Future<void> _loadUserProfile() async {
+    String? token = await _storage.read(key: 'token');
+
+    if (token != null) {
+      User? userProfile = await _authService.getUserProfile(token);
+
+      if (userProfile != null) {
+        setState(() {
+          _user = userProfile;
+        });
+      } else {
+        print('Failed to load user profile.');
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Drawer(
       child: Column(
         children: [
-          // Drawer Header with logo and app name
           DrawerHeader(
             decoration: const BoxDecoration(
               color: kPrimaryColor,
             ),
             child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                // Logo
-                Image.asset(
-                  'assets/images/logo.png', // Path to your logo image
-                  height: 60,
+                CircleAvatar(
+                  radius: 30,
+                  backgroundImage: _user!.photo.isNotEmpty
+                      ? NetworkImage('$baseImageUrl${_user!.photo}')
+                      : const AssetImage('assets/images/avatar.png')
+                          as ImageProvider,
                 ),
-                // App name
-                Text(
-                  'SNCFT',
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                  ),
+                const SizedBox(width: 16),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "${_user!.firstName} ${_user!.lastName}",
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      _user!.email,
+                      style: const TextStyle(
+                        color: Colors.white70,
+                        fontSize: 14,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      _user!.role,
+                      style: const TextStyle(
+                        color: Colors.white70,
+                        fontSize: 14,
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
           ),
-          // Drawer items
           Expanded(
             child: ListView(
               padding: EdgeInsets.zero,
-              children: _getDrawerItems(actor, context),
+              children: _getDrawerItems(widget.actor, context),
             ),
           ),
-          // Inside your CustomDrawer widget
           Container(
             color: kPrimaryColor,
             child: ListTile(
               title: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   foregroundColor: kPrimaryColor,
-                  backgroundColor: Colors.white, // Text color
+                  backgroundColor: Colors.white,
                 ),
                 onPressed: () {
-                  // Trigger logout
                   logoutUser(context);
                 },
-                child: Text('Logout'),
+                child: const Text('Logout'),
               ),
             ),
           ),
@@ -70,7 +123,7 @@ class CustomDrawer extends StatelessWidget {
 
   List<Widget> _getDrawerItems(String actor, BuildContext context) {
     switch (actor) {
-      case 'administrateur':
+      case 'admin':
         return [
           _createDrawerItem(
               icon: Icons.dashboard,
@@ -88,6 +141,10 @@ class CustomDrawer extends StatelessWidget {
               icon: Icons.person_add,
               text: 'User list',
               onTap: () => Navigator.pushNamed(context, '/admin/users')),
+          _createDrawerItem(
+              icon: Icons.person_add,
+              text: 'Chat',
+              onTap: () => Navigator.pushNamed(context, '/admin/chat-list')),
           _createDrawerItem(
               icon: Icons.person,
               text: 'Profile',
@@ -112,7 +169,7 @@ class CustomDrawer extends StatelessWidget {
               text: 'Profile',
               onTap: () => Navigator.pushNamed(context, '/profile')),
         ];
-      case 'conducteur':
+      case 'conductor':
         return [
           _createDrawerItem(
               icon: Icons.train,
@@ -127,7 +184,7 @@ class CustomDrawer extends StatelessWidget {
               text: 'Profile',
               onTap: () => Navigator.pushNamed(context, '/profile')),
         ];
-      case 'operateur':
+      case 'operator':
         return [
           _createDrawerItem(
               icon: Icons.control_camera,

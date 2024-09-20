@@ -3,7 +3,7 @@ import 'package:animate_do/animate_do.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:frontend/utils/constant.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:frontend/widgets/Home.dart';
+import 'package:frontend/widgets/BottomNav.dart';
 import 'package:frontend/screens/visitor/introScreen.dart';
 
 class LoadingScreen extends StatefulWidget {
@@ -42,25 +42,25 @@ class _LoadingScreenState extends State<LoadingScreen> {
       switch (role) {
         case 'administrateur':
           Navigator.of(context).pushReplacement(MaterialPageRoute(
-              builder: (context) => HomePage(
+              builder: (context) => BottomNav(
                     userRole: 'admin',
                   )));
           break;
         case 'client':
           Navigator.of(context).pushReplacement(MaterialPageRoute(
-              builder: (context) => HomePage(
+              builder: (context) => BottomNav(
                     userRole: 'client',
                   )));
           break;
         case 'conducteur':
           Navigator.of(context).pushReplacement(MaterialPageRoute(
-              builder: (context) => HomePage(
+              builder: (context) => BottomNav(
                     userRole: 'conductor',
                   )));
           break;
         case 'operateur':
           Navigator.of(context).pushReplacement(MaterialPageRoute(
-              builder: (context) => HomePage(
+              builder: (context) => BottomNav(
                     userRole: 'operator',
                   )));
           break;
@@ -83,11 +83,10 @@ class _LoadingScreenState extends State<LoadingScreen> {
               duration: const Duration(seconds: 3),
               child: const Image(
                 image: AssetImage('assets/images/logosncft.png'),
-                width: 180,
-                height: 180,
+                width: 200,
+                height: 200,
               ),
             ),
-            const SizedBox(height: 20),
             const SpinKitFadingCircle(
               color: kPrimaryColor,
               size: 50.0,

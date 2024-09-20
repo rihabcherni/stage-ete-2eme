@@ -38,10 +38,10 @@ class MessagePopup extends StatelessWidget {
               Text(
                 title,
                 textAlign: TextAlign.center,
-                style:const TextStyle(
+                style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   letterSpacing: 1,
-                  fontSize:18,
+                  fontSize: 18,
                 ),
               ),
               const SizedBox(
@@ -50,8 +50,8 @@ class MessagePopup extends StatelessWidget {
               Center(
                 child: Text(
                   text,
-                  style:const TextStyle(
-                    fontSize:14,
+                  style: const TextStyle(
+                    fontSize: 14,
                   ),
                   textAlign: TextAlign.center,
                 ),

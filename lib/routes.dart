@@ -18,7 +18,7 @@ import 'package:frontend/screens/visitor/auth/update_password_screen.dart';
 import 'package:frontend/screens/visitor/auth/verify_email_screen.dart';
 import 'package:frontend/screens/visitor/loading.dart';
 import 'package:frontend/screens/visitor/settings.dart';
-import 'package:frontend/widgets/Home.dart';
+import 'package:frontend/widgets/BottomNav.dart';
 
 class ListeRouter {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -54,7 +54,10 @@ class ListeRouter {
         return MaterialPageRoute(builder: (_) => const ProfilePage());
       // client
       case '/client':
-        return MaterialPageRoute(builder: (_) => ClientDashboard());
+        return MaterialPageRoute(
+            builder: (_) => BottomNav(
+                  userRole: 'client',
+                ));
       case '/client/order':
         return MaterialPageRoute(
           builder: (_) => OrderPage(),
@@ -63,7 +66,7 @@ class ListeRouter {
       // admin
       case '/admin':
         return MaterialPageRoute(
-            builder: (_) => HomePage(
+            builder: (_) => BottomNav(
                   userRole: 'admin',
                 ));
       case '/admin/map':
@@ -72,6 +75,7 @@ class ListeRouter {
         return MaterialPageRoute(builder: (_) => const AdminUsersScreen());
       case '/admin/train':
         return MaterialPageRoute(builder: (_) => AdminTrainsScreen());
+
       case '/admin/chat-list':
         return MaterialPageRoute(builder: (_) => UserListScreen());
       case '/admin/chat':

@@ -23,13 +23,14 @@ class AuthProvider extends ChangeNotifier {
   Future<void> _loadToken() async {
     _token = await _storage.read(key: 'token');
     _isLoggedIn = _token != null;
-    _userType = await _storage.read(key: 'userType');
+    _userType = await _storage.read(key: 'role');
     _email = await _storage.read(key: 'email');
-    _fullName = await _storage.read(key: 'full_name');
+    _fullName = await _storage.read(key: 'fullName');
     notifyListeners();
   }
 
-  Future<void> setToken(String? token, String? userType, String? email, String? fullName) async {
+  Future<void> setToken(
+      String? token, String? userType, String? email, String? fullName) async {
     _token = token;
     _isLoggedIn = token != null;
     _userType = userType;
@@ -37,9 +38,9 @@ class AuthProvider extends ChangeNotifier {
     _fullName = fullName;
 
     await _storage.write(key: 'token', value: token ?? '');
-    await _storage.write(key: 'userType', value: userType ?? '');
+    await _storage.write(key: 'role', value: userType ?? '');
     await _storage.write(key: 'email', value: email ?? '');
-    await _storage.write(key: 'full_name', value: fullName ?? '');
+    await _storage.write(key: 'fullName', value: fullName ?? '');
 
     notifyListeners();
   }

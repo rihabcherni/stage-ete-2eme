@@ -209,16 +209,19 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>[
                                   const Text(
-                                    'Not a member?',
+                                    "Don't have an account?",
                                     style: TextStyle(color: kGrayColor),
                                   ),
                                   TextButton(
                                     onPressed: () {
-                                      Navigator.of(context).pushNamed("/login");
+                                      Navigator.of(context)
+                                          .pushNamed("/inscription");
                                     },
                                     child: const Text(
                                       'SignUp',
-                                      style: TextStyle(color: kPrimaryColor),
+                                      style: TextStyle(
+                                          color: kPrimaryColor,
+                                          fontWeight: FontWeight.bold),
                                     ),
                                   ),
                                 ],

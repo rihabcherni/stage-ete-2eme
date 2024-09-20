@@ -12,6 +12,7 @@ import 'package:frontend/screens/conducteur/conducteurDashboard.dart';
 import 'package:frontend/screens/operateur/OperateurDashboard.dart';
 import 'package:frontend/screens/visitor/auth/profile.dart';
 import 'package:frontend/screens/visitor/settings.dart';
+import 'package:frontend/widgets/custom_drawer.dart';
 
 List<BottomNavigationBarItem> adminNavItems = [
   const BottomNavigationBarItem(
@@ -22,10 +23,7 @@ List<BottomNavigationBarItem> adminNavItems = [
       icon: Icon(Icons.receipt_long), label: 'Commandes'),
   const BottomNavigationBarItem(icon: Icon(Icons.people), label: 'Users'),
   const BottomNavigationBarItem(
-      icon: Icon(Icons.mark_unread_chat_alt), label: 'Chat'),
-  const BottomNavigationBarItem(
       icon: Icon(Icons.report_problem), label: 'Reclamation'),
-  const BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'Profil'),
 ];
 
 List<BottomNavigationBarItem> clientNavItems = [
@@ -48,19 +46,18 @@ List<BottomNavigationBarItem> operatorNavItems = [
   const BottomNavigationBarItem(icon: Icon(Icons.schedule), label: 'Schedule'),
 ];
 
-class HomePage extends StatefulWidget {
+class BottomNav extends StatefulWidget {
   final String userRole;
 
-  HomePage({required this.userRole});
+  BottomNav({required this.userRole});
 
   @override
-  _HomePageState createState() => _HomePageState();
+  _BottomNavState createState() => _BottomNavState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _BottomNavState extends State<BottomNav> {
   int _selectedIndex = 0;
 
-  // Define your pages here
   final List<Widget> adminPages = [
     AdminDashboardScreen(),
     AdminTrainsScreen(),
@@ -68,7 +65,7 @@ class _HomePageState extends State<HomePage> {
     const AdminCommandesScreen(),
     const AdminUsersScreen(),
     const ChatUserList(),
-    const AdminReclamationScreen(),
+    AdminReclamationScreen(),
     const ProfilePage(),
   ];
 
@@ -117,6 +114,30 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
+  List<String> getPageTitles() {
+    switch (widget.userRole) {
+      case 'admin':
+        return [
+          'Dashboard',
+          'Trains',
+          'Trajets',
+          'Commandes',
+          'Users',
+          'Chat',
+          'Reclamation',
+          'Profil'
+        ];
+      case 'client':
+        return ['Home', 'Orders', 'Profile'];
+      case 'conductor':
+        return ['Trains'];
+      case 'operator':
+        return ['Notifications', 'Schedule'];
+      default:
+        return [];
+    }
+  }
+
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
@@ -126,11 +147,63 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Home')),
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(56.0),
+        child: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                Color.fromARGB(255, 2, 45, 120),
+                Color.fromARGB(255, 24, 131, 219),
+                Colors.blue,
+                Color.fromARGB(255, 24, 131, 219),
+                Color.fromARGB(255, 2, 45, 120)
+              ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+          ),
+          child: AppBar(
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            title: Text(
+              getPageTitles()[_selectedIndex],
+              style: const TextStyle(color: Colors.white),
+            ),
+            iconTheme: const IconThemeData(color: Colors.white),
+            actions: const <Widget>[
+              IconButton(
+                icon: Icon(
+                  Icons.notifications_none,
+                  color: Colors.white,
+                ),
+                onPressed: null,
+              ),
+              IconButton(
+                icon: Icon(
+                  Icons.chat,
+                  color: Colors.white,
+                ),
+                onPressed: null,
+              ),
+              IconButton(
+                icon: Icon(
+                  Icons.settings,
+                  color: Colors.white,
+                ),
+                onPressed: null,
+              ),
+            ],
+          ),
+        ),
+      ),
+      drawer: CustomDrawer(actor: widget.userRole),
       body: getPages()[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
-        fixedColor: const Color.fromARGB(255, 8, 27, 238),
-        backgroundColor: const Color.fromARGB(255, 2, 4, 6),
+        type: BottomNavigationBarType.fixed,
+        backgroundColor: const Color.fromARGB(255, 2, 45, 120),
+        selectedItemColor: const Color.fromARGB(255, 255, 255, 255),
+        unselectedItemColor: Colors.grey,
         items: getNavItems(),
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,

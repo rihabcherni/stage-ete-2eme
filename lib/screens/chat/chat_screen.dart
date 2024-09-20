@@ -19,9 +19,16 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   void initState() {
     super.initState();
+    _initializeSocket();
+  }
+
+  void _initializeSocket() {
     socket = IO.io('http://localhost:5000', <String, dynamic>{
       'transports': ['websocket'],
+      'autoConnect': false,
     });
+
+    socket?.connect();
 
     socket?.on('connect', (_) {
       print('Connected to server');
@@ -30,7 +37,6 @@ class _ChatScreenState extends State<ChatScreen> {
     });
 
     socket?.on('receiveMessage', (data) {
-      // Ensure the data is properly formatted
       if (data != null && data is Map<String, dynamic>) {
         setState(() {
           _messages.add(Map<String, dynamic>.from(data));
@@ -66,6 +72,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   void dispose() {
+    socket?.disconnect();
     socket?.dispose();
     super.dispose();
   }
@@ -82,6 +89,7 @@ class _ChatScreenState extends State<ChatScreen> {
           children: <Widget>[
             Expanded(
               child: ListView.builder(
+                reverse: true, // Display the latest messages at the bottom
                 itemCount: _messages.length,
                 itemBuilder: (context, index) {
                   final message = _messages[index];
@@ -91,10 +99,9 @@ class _ChatScreenState extends State<ChatScreen> {
                   return ListTile(
                     title: Text(messageText),
                     subtitle: Text(
-                      senderId == widget.userId
-                          ? 'You'
-                          : 'Other',
+                      senderId == widget.userId ? 'You' : 'Other',
                     ),
+                    contentPadding: EdgeInsets.symmetric(vertical: 4.0),
                   );
                 },
               ),
@@ -106,7 +113,9 @@ class _ChatScreenState extends State<ChatScreen> {
                     controller: _controller,
                     decoration: const InputDecoration(
                       labelText: 'Send a message',
+                      border: OutlineInputBorder(),
                     ),
+                    onSubmitted: (_) => _sendMessage(),
                   ),
                 ),
                 IconButton(

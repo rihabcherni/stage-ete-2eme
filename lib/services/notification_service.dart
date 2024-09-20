@@ -1,9 +1,10 @@
 import 'dart:convert';
+import 'package:frontend/utils/constant.dart';
 import 'package:http/http.dart' as http;
 import '../models/notification.dart';
 
 class NotificationService {
-  static const String baseUrl = 'http://localhost:3000/api/notifications';
+  static const String baseUrl = '$backendUrl/api/notifications';
 
   Future<List<AppNotification>> getNotificationsByUser(String userId) async {
     final response = await http.get(Uri.parse('$baseUrl/user/$userId'));

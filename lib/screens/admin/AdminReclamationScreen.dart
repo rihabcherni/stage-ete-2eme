@@ -1,64 +1,69 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/models/reclamation.dart';
+import 'package:frontend/services/reclamations_service.dart';
 
-class AdminReclamationScreen extends StatelessWidget {
-  const AdminReclamationScreen({Key? key}) : super(key: key);
+class AdminReclamationScreen extends StatefulWidget {
+  @override
+  _AdminReclamationScreenState createState() =>
+      _AdminReclamationScreenState();
+}
+
+class _AdminReclamationScreenState extends State<AdminReclamationScreen> {
+  final ReclamationService _reclamationService = ReclamationService();
+  List<Reclamation> _reclamations = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchReclamations();
+  }
+
+  Future<void> _fetchReclamations() async {
+    try {
+      final data = await _reclamationService.getAllReclamations();
+      setState(() {
+        _reclamations = data;
+      });
+    } catch (e) {
+      // Handle error
+    }
+  }
+
+  // Update status of reclamation
+  void _updateReclamationStatus(String id, String status) async {
+    try {
+      await _reclamationService.updateReclamationStatus(id, status);
+      _fetchReclamations(); // Refresh list
+    } catch (e) {
+      // Handle error
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Admin Reclamations'),
+      appBar: AppBar(title: Text('All Reclamations')),
+      body: ListView.builder(
+        itemCount: _reclamations.length,
+        itemBuilder: (context, index) {
+          final reclamation = _reclamations[index];
+          return ListTile(
+            title: Text(reclamation.message),
+            subtitle: Text('Status: ${reclamation.status}'),
+            trailing: DropdownButton<String>(
+              value: reclamation.status,
+              onChanged: (newStatus) =>
+                  _updateReclamationStatus(reclamation.id, newStatus!),
+              items: ['Pending', 'In Progress', 'Resolved'].map((status) {
+                return DropdownMenuItem(
+                  value: status,
+                  child: Text(status),
+                );
+              }).toList(),
+            ),
+          );
+        },
       ),
-      body: ReclamationList(),
-    );
-  }
-}
-
-class ReclamationList extends StatelessWidget {
-  // Simulate reclamations list. Replace with real data fetching.
-  final List<Map<String, String>> reclamations = [
-    {
-      'id': '1',
-      'clientName': 'Client 1',
-      'order': 'Order 1',
-      'status': 'Pending'
-    },
-    {
-      'id': '2',
-      'clientName': 'Client 2',
-      'order': 'Order 2',
-      'status': 'Resolved'
-    },
-    {
-      'id': '3',
-      'clientName': 'Client 3',
-      'order': 'Order 3',
-      'status': 'In Progress'
-    },
-  ];
-
-  @override
-  Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: reclamations.length,
-      itemBuilder: (context, index) {
-        final reclamation = reclamations[index];
-        return ListTile(
-          title: Text('Reclamation from ${reclamation['clientName']}'),
-          subtitle: Text(
-              'Related to: ${reclamation['order']}\nStatus: ${reclamation['status']}'),
-          isThreeLine: true,
-          trailing: IconButton(
-            icon: const Icon(Icons.more_vert),
-            onPressed: () {
-              // Show options like mark as resolved, delete
-            },
-          ),
-          onTap: () {
-            // Navigate to details page of the reclamation
-          },
-        );
-      },
     );
   }
 }
